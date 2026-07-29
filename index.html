@@ -242,11 +242,16 @@
     .qty-btn:hover { background: #f5f5f5; }
     .qty-btn:active { background: #eee; }
     .qty-num {
-      flex: 1; min-width: 0; text-align: center;
+      flex: 1; min-width: 0; width: 100%; text-align: center;
       font-size: 14px; font-weight: 700; color: #111;
-      border-left: 1.5px solid #e5e5e5; border-right: 1.5px solid #e5e5e5;
-      display: flex; align-items: center; justify-content: center;
+      border: none; border-left: 1.5px solid #e5e5e5; border-right: 1.5px solid #e5e5e5;
+      background: transparent; padding: 0;
+      -moz-appearance: textfield; appearance: textfield;
+      font-family: inherit; cursor: text; -webkit-tap-highlight-color: transparent;
     }
+    .qty-num::-webkit-outer-spin-button,
+    .qty-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .qty-num:focus { outline: none; background: var(--accent-bg); color: var(--accent-dark); }
     .add-btn {
       flex: 1; height: 36px; border-radius: 8px; border: none;
       background: var(--accent); color: #fff;
@@ -638,7 +643,7 @@
 
     /* ── Product Detail Overlay ──────────────── */
     .detail-overlay {
-      position: fixed; inset: 0; z-index: 8000;
+      position: fixed; inset: 0; z-index: 9300;   /* bottom-nav (9000) dan yuqori */
       background: #fff;
       display: flex; flex-direction: column;
       animation: fadeIn .2s ease;
@@ -678,7 +683,9 @@
     }
     .detail-img-side img { max-width: 100%; max-height: 380px; object-fit: contain; }
     .detail-info-side { padding: 36px 32px; display: flex; flex-direction: column; gap: 0; }
-    @media (max-width: 640px) { .detail-info-side { padding: 24px 20px; } }
+    @media (max-width: 640px) {
+      .detail-info-side { padding: 24px 20px calc(28px + env(safe-area-inset-bottom)); }
+    }
     .detail-cat { font-size: 12px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
     .detail-name { font-size: 26px; font-weight: 800; color: #111; letter-spacing: -.4px; line-height: 1.25; margin-bottom: 16px; }
     @media (max-width: 640px) { .detail-name { font-size: 20px; } }
@@ -1163,6 +1170,18 @@ function ProductItem({ p, onAdd, setQty, cart, showImages, onDetail }) {
   const cartKey = p.id+'_'+(unit?.unit_id??'base')
   const inCart = !hasVariants ? (cart.find(x => x.key === cartKey)?.qty || 0) : 0
   const out    = hasVariants ? !p.in_stock : maxQty <= 0
+  const isWeight = !hasVariants && isWeightUnit(unit?.unit_name)
+
+  // Sonni qo'lda kiritish — input'dan chiqqanda yoki Enter bosilganda
+  const commitQty = (el) => {
+    const raw = String(el.value).replace(',', '.').trim()
+    let n = parseFloat(raw)
+    if (!isFinite(n) || n < 0) { el.value = fmtQty(inCart); return }
+    n = isWeight ? Math.round(n * 1000) / 1000 : Math.round(n)
+    if (maxQty !== Infinity) n = Math.min(n, maxQty)
+    if (n === inCart) { el.value = fmtQty(inCart); return }
+    setQty(cartKey, n)   // 0 bo'lsa — mahsulot savatdan o'chadi
+  }
 
   const displayPrice = hasVariants
     ? (p.variants[0]?.price ?? 0)
@@ -1231,7 +1250,12 @@ function ProductItem({ p, onAdd, setQty, cart, showImages, onDetail }) {
             ? html`
               <div className="qty-wrap" style=${{flex:1}}>
                 <button className="qty-btn" onClick=${e=>{e.stopPropagation();setQty(cartKey, inCart-1)}}>−</button>
-                <span className="qty-num">${fmtQty(inCart)}</span>
+                <input key=${'q'+inCart} className="qty-num" type="text"
+                  inputMode=${isWeight ? 'decimal' : 'numeric'}
+                  defaultValue=${fmtQty(inCart)}
+                  onClick=${e=>{e.stopPropagation(); e.target.select()}}
+                  onKeyDown=${e=>{ if(e.key === 'Enter') e.target.blur() }}
+                  onBlur=${e=>commitQty(e.target)}/>
                 <button className="qty-btn" onClick=${e=>{e.stopPropagation(); if(maxQty===Infinity||inCart<maxQty) onAdd(p, unit, addBtnRef.current)}}>+</button>
               </div>`
             // Savatda yo'q — bitta "Savatga" tugmasi
