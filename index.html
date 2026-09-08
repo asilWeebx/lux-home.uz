@@ -300,7 +300,7 @@
       display: flex; align-items: center; justify-content: center;
       margin-bottom: 14px;
       transition: background .25s, box-shadow .25s;
-      cursor: zoom-in;
+      cursor: pointer;
     }
     .product-item:hover .product-img-wrap {
       background: var(--bg-soft);
@@ -987,6 +987,101 @@
       .detail-img-side { width: 100%; border-radius: 16px; }
     }
     .detail-img-side img { width: 78%; height: 78%; object-fit: contain; border-radius: 16px; display: block; }
+
+    /* ── Rasmni kattalashtirib ko‘rish (lightbox) ─── */
+    .detail-img-side.zoomable { position: relative; cursor: zoom-in; }
+    .detail-img-side.zoomable img { pointer-events: none; transition: transform .25s ease; }
+    .detail-img-side.zoomable:hover img { transform: scale(1.04); }
+    .img-zoom-hint {
+      position: absolute; bottom: 12px; right: 12px; z-index: 3;
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: var(--radius-pill);
+      background: rgba(45,33,31,0.72); color: #fff;
+      font-size: 11px; font-weight: 600; letter-spacing: .01em;
+      opacity: 0; transform: translateY(4px);
+      transition: all .2s ease; pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+    .img-zoom-hint svg { flex-shrink: 0; }
+    .detail-img-side.zoomable:hover .img-zoom-hint { opacity: 1; transform: translateY(0); }
+    @media (hover: none) {
+      .img-zoom-hint { opacity: .85; transform: none; }
+    }
+    .card-zoom-btn {
+      position: absolute; top: 10px; right: 10px; z-index: 3;
+      width: 32px; height: 32px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line); background: rgba(251,248,243,0.92);
+      color: var(--ink-soft); cursor: zoom-in;
+      opacity: 0; transform: translateY(-3px);
+      transition: all .2s ease; backdrop-filter: blur(4px);
+    }
+    .product-item:hover .card-zoom-btn { opacity: 1; transform: translateY(0); }
+    .card-zoom-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    @media (hover: none) {
+      .card-zoom-btn { opacity: .9; transform: none; width: 34px; height: 34px; }
+    }
+
+    .lb-overlay {
+      position: fixed; inset: 0; z-index: 9600;
+      background: rgba(24,18,15,0.94);
+      backdrop-filter: blur(8px);
+      display: flex; flex-direction: column;
+      animation: lbIn .18s ease;
+    }
+    @keyframes lbIn { from { opacity: 0 } to { opacity: 1 } }
+    .lb-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 14px 18px; color: rgba(255,255,255,0.85);
+    }
+    .lb-title {
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 46vw; letter-spacing: -0.01em;
+    }
+    .lb-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .lb-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08); color: #fff;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: all .18s ease; flex-shrink: 0;
+    }
+    .lb-btn:hover { background: rgba(255,255,255,0.2); }
+    .lb-btn:disabled { opacity: .35; cursor: default; }
+    .lb-btn:disabled:hover { background: rgba(255,255,255,0.08); }
+    .lb-zoom-label {
+      min-width: 48px; text-align: center;
+      border: none; background: none; cursor: pointer;
+      font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8);
+      font-family: inherit; letter-spacing: .02em;
+    }
+    .lb-zoom-label:hover { color: #fff; }
+    .lb-stage {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      overflow: hidden; touch-action: none; min-height: 0;
+      cursor: zoom-in;
+    }
+    .lb-stage.zoomed { cursor: grab; }
+    .lb-stage.dragging { cursor: grabbing; }
+    .lb-stage img {
+      max-width: min(92vw, 1100px); max-height: calc(100vh - 150px);
+      object-fit: contain; user-select: none; -webkit-user-drag: none;
+      transform-origin: center center; border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+      transition: transform .16s ease;
+    }
+    .lb-stage img.no-anim { transition: none; }
+    .lb-bottom {
+      text-align: center; padding: 10px 16px 18px;
+      font-size: 11.5px; color: rgba(255,255,255,0.5); letter-spacing: .01em;
+    }
+    @media (max-width: 640px) {
+      .lb-top { padding: 10px 12px; }
+      .lb-btn { width: 36px; height: 36px; }
+      .lb-title { max-width: 38vw; font-size: 12px; }
+      .lb-bottom { font-size: 10.5px; padding-bottom: 14px; }
+      .lb-stage img { max-width: 96vw; max-height: calc(100vh - 130px); }
+    }
     .detail-info-side { padding: 40px 36px; display: flex; flex-direction: column; gap: 0; width: 44%;}
     @media (max-width: 640px) { .detail-info-side { padding: 24px 22px; width: 100%; } }
     .detail-cat { font-size: 11px; font-weight: 600; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
@@ -1215,6 +1310,7 @@
 <script type="module">
 import React, { useState, useEffect, useMemo, useRef } from 'https://esm.sh/react@18.2.0'
 import { createRoot } from 'https://esm.sh/react-dom@18.2.0/client'
+import { createPortal } from 'https://esm.sh/react-dom@18.2.0'
 import htm from 'https://esm.sh/htm@3.1.1'
 const html = htm.bind(React.createElement)
 
@@ -1309,6 +1405,8 @@ const IBox    = ({s=40}) => html`<svg width=${s} height=${s} viewBox="0 0 24 24"
 const IPin    = ({s=20}) => html`<${Ic} size=${s}><path d="M21 10c0 6.5-9 12-9 12s-9-5.5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></${Ic}>`
 const IMapIcon= ({s=20}) => html`<${Ic} size=${s}><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></${Ic}>`
 const ICrosshair = ({s=20}) => html`<${Ic} size=${s}><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></${Ic}>`
+const IZoomIn  = ({s=18}) => html`<${Ic} size=${s}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></${Ic}>`
+const IZoomOut = ({s=18}) => html`<${Ic} size=${s}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></${Ic}>`
 
 // ── Magic orb animation ────────────────────────────────────────────────
 function magicOrb(fromEl, toEl) {
@@ -1326,6 +1424,119 @@ function magicOrb(fromEl, toEl) {
   orb.style.transform = 'scale(0.3)'
   orb.style.opacity   = '0.5'
   setTimeout(() => { orb.remove() }, 650)
+}
+
+// ── ImgLightbox — rasmni to‘liq ekranda kattalashtirib ko‘rish ────────
+const ZOOM_MIN = 1, ZOOM_MAX = 6
+function ImgLightbox({ src, alt, onClose }) {
+  const [zoom, setZoom]         = useState(1)
+  const [pos, setPos]           = useState({ x: 0, y: 0 })
+  const [dragging, setDragging] = useState(false)
+  const stageRef = useRef(null)
+  const dragSt   = useRef(null)
+  const pinchSt  = useRef(null)
+
+  const clampZ = z => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z))
+  const reset  = () => { setZoom(1); setPos({ x: 0, y: 0 }) }
+  const rel = (cx, cy) => {
+    const r = stageRef.current.getBoundingClientRect()
+    return { x: cx - (r.left + r.width / 2), y: cy - (r.top + r.height / 2) }
+  }
+  const zoomAt = (cx, cy, factor) => {
+    const nz = clampZ(zoom * factor)
+    if (nz === zoom) return
+    if (nz === ZOOM_MIN) { reset(); return }
+    const c = rel(cx, cy), k = nz / zoom
+    setPos({ x: c.x - (c.x - pos.x) * k, y: c.y - (c.y - pos.y) * k })
+    setZoom(nz)
+  }
+  const step = dir => zoomAt(window.innerWidth/2, window.innerHeight/2, dir > 0 ? 1.45 : 1/1.45)
+
+  // ESC — yopish, fon scroll’ini blokirovka qilish
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey) }
+  }, [])
+
+  // G‘ildirak bilan zoom (kursur nuqtasi atrofida)
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const onWheel = e => { e.preventDefault(); zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.15 : 1/1.15) }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  })
+
+  // Mobil — ikki barmoq bilan chimchilash (pinch-zoom)
+  useEffect(() => {
+    const el = stageRef.current
+    if (!el) return
+    const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY)
+    const start = e => { if (e.touches.length === 2) pinchSt.current = { d: dist(e.touches), z: zoom, p: { ...pos } } }
+    const move  = e => {
+      if (e.touches.length === 2 && pinchSt.current) {
+        e.preventDefault()
+        const s  = pinchSt.current
+        const nz = clampZ(s.z * dist(e.touches) / s.d)
+        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2
+        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2
+        const c  = rel(cx, cy), k = nz / s.z
+        setPos({ x: c.x - (c.x - s.p.x) * k, y: c.y - (c.y - s.p.y) * k })
+        setZoom(nz)
+      }
+    }
+    const end = () => { pinchSt.current = null }
+    el.addEventListener('touchstart',  start, { passive: true })
+    el.addEventListener('touchmove',   move,  { passive: false })
+    el.addEventListener('touchend',    end)
+    el.addEventListener('touchcancel', end)
+    return () => {
+      el.removeEventListener('touchstart',  start)
+      el.removeEventListener('touchmove',   move)
+      el.removeEventListener('touchend',    end)
+      el.removeEventListener('touchcancel', end)
+    }
+  })
+
+  const onDown = e => {
+    if (zoom <= 1) return
+    e.preventDefault()
+    if (e.currentTarget.setPointerCapture) e.currentTarget.setPointerCapture(e.pointerId)
+    dragSt.current = { sx: e.clientX, sy: e.clientY, px: pos.x, py: pos.y }
+    setDragging(true)
+  }
+  const onMove = e => {
+    if (!dragSt.current) return
+    const d = dragSt.current
+    setPos({ x: d.px + (e.clientX - d.sx), y: d.py + (e.clientY - d.sy) })
+  }
+  const onUp = () => { dragSt.current = null; setDragging(false) }
+  const onDbl = e => { zoom > 1 ? reset() : zoomAt(e.clientX, e.clientY, 2.5 / zoom) }
+
+  return createPortal(html`
+    <div className="lb-overlay" onClick=${e => { if (e.target === e.currentTarget) onClose() }}>
+      <div className="lb-top">
+        <div className="lb-title">${alt || 'Mahsulot rasmi'}</div>
+        <div className="lb-actions">
+          <button className="lb-btn" title="Kichraytirish" onClick=${() => step(-1)} disabled=${zoom <= ZOOM_MIN}><${IZoomOut} s=${18}/></button>
+          <button className="lb-zoom-label" title="Boshlang‘ich holatga qaytarish" onClick=${reset}>${Math.round(zoom * 100)}%</button>
+          <button className="lb-btn" title="Kattalashtirish" onClick=${() => step(1)} disabled=${zoom >= ZOOM_MAX}><${IZoomIn} s=${18}/></button>
+          <button className="lb-btn" title="Yopish (ESC)" onClick=${onClose}><${IX} s=${17}/></button>
+        </div>
+      </div>
+      <div ref=${stageRef}
+        className=${'lb-stage' + (zoom > 1 ? ' zoomed' : '') + (dragging ? ' dragging' : '')}
+        onClick=${e => { if (zoom === 1 && e.target === stageRef.current) onClose() }}
+        onPointerDown=${onDown} onPointerMove=${onMove} onPointerUp=${onUp} onPointerCancel=${onUp}
+        onDoubleClick=${onDbl}>
+        <img className=${dragging ? 'no-anim' : ''} src=${src} alt=${alt} draggable=${false}
+          style=${{ transform: `translate(${pos.x}px, ${pos.y}px) scale(${zoom})` }}/>
+      </div>
+      <div className="lb-bottom">Ikki marta bosing yoki g‘ildirak bilan kattalashtiring · Zoom holatda sudrab ko‘ring · ESC — yopish</div>
+    </div>`, document.body)
 }
 
 // ── ProductDetail ─────────────────────────────────────────────────────
@@ -1346,6 +1557,7 @@ function ProductDetail({ product, onClose, onAdd, onAddVariant, cart, allProduct
   const [qty,    setQty]    = useState(1)
   const [added,  setAdded]  = useState(false)
   const addRef = useRef(null)
+  const [zoomOpen, setZoomOpen] = useState(false)
 
   const selVariant = hasVariants ? (p.variants.find(v => v.id === variantId) || p.variants[0]) : null
   const unit = !hasVariants ? (p.units?.find(u => u.unit_id === unitId) || p.units?.[0]) : null
@@ -1394,10 +1606,12 @@ function ProductDetail({ product, onClose, onAdd, onAddVariant, cart, allProduct
 
       <div className="detail-body">
         <!-- Image -->
-        <div className="detail-img-side">
+        <div className=${'detail-img-side' + (p.image ? ' zoomable' : '')}
+          onClick=${p.image ? () => setZoomOpen(true) : undefined}>
           ${p.image
             ? html`<img src=${media(p.image)} alt=${p.name}/>`
             : html`<${IBox} s=${100}/>`}
+          ${p.image && html`<div className="img-zoom-hint"><${IZoomIn} s=${13}/>Kattalashtirish</div>`}
         </div>
 
         <!-- Info -->
@@ -1492,6 +1706,9 @@ function ProductDetail({ product, onClose, onAdd, onAddVariant, cart, allProduct
               </div>`)}
           </div>
         </div>`}
+
+      ${zoomOpen && p.image && html`<${ImgLightbox}
+        src=${media(p.image)} alt=${p.name} onClose=${() => setZoomOpen(false)}/>`}
     </div>`
 }
 
@@ -1634,6 +1851,7 @@ function ProductItem({ p, onAdd, setQty, cart, showImages, onDetail }) {
     : p.units?.[0]
   const [unitId, setUnitId] = useState(_firstAvail?.unit_id ?? null)
   const [added, setAdded]   = useState(false)
+  const [zoomOpen, setZoomOpen] = useState(false)
   const addBtnRef = useRef(null)
 
   const unit   = !hasVariants ? (p.units?.find(u => u.unit_id === unitId) || p.units?.[0]) : null
@@ -1672,6 +1890,9 @@ function ProductItem({ p, onAdd, setQty, cart, showImages, onDetail }) {
         ${showImages && p.image
           ? html`<img src=${media(p.image)} alt=${p.name} loading="lazy" onError=${e=>{e.target.style.display='none'}}/>`
           : html`<${IBox} s=${48}/>`}
+        ${showImages && p.image && html`
+          <button className="card-zoom-btn" title="Kattalashtirib ko‘rish"
+            onClick=${e=>{e.stopPropagation();setZoomOpen(true)}}><${IZoomIn} s=${15}/></button>`}
         ${out && html`<div className="stock-out-overlay"><span className="stock-out-tag">Tugadi</span></div>`}
         ${inCart > 0 && html`<div className="in-cart-dot">${inCart}</div>`}
       </div>
@@ -1727,6 +1948,9 @@ function ProductItem({ p, onAdd, setQty, cart, showImages, onDetail }) {
                 ${out ? 'Tugadi' : added ? '✓' : 'Savatga'}
               </button>`}
       </div>
+
+      ${zoomOpen && p.image && html`<${ImgLightbox}
+        src=${media(p.image)} alt=${p.name} onClose=${() => setZoomOpen(false)}/>`}
     </div>`
 }
 
