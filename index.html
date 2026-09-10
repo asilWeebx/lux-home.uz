@@ -267,11 +267,12 @@
     .top-rail-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .top-rail-head h2 { font-size: 20px; font-weight: 800; color: var(--ink); margin: 0; letter-spacing: -0.01em; }
     .top-rail-badge { font-size: 12px; font-weight: 700; color: var(--sage-deep); background: var(--sage-tint); padding: 3px 11px; border-radius: 20px; white-space: nowrap; }
-    .top-rail { display: flex; gap: 24px; overflow-x: auto; padding: 4px 2px 12px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+    .top-rail { display: flex; gap: 24px; overflow-x: auto; padding: 4px 2px 12px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; align-items: stretch; }
     .top-rail::-webkit-scrollbar { height: 6px; }
     .top-rail::-webkit-scrollbar-track { background: transparent; }
     .top-rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
-    .top-rail-item { position: relative; flex: 0 0 auto; width: 210px; scroll-snap-align: start; }
+    .top-rail-item { position: relative; flex: 0 0 auto; width: 210px; scroll-snap-align: start; display: flex; }
+    .top-rail-item > .product-item { flex: 1; min-width: 0; }
     .top-rail-rank {
       position: absolute; top: 10px; left: 10px; z-index: 2;
       display: flex; align-items: center; gap: 4px;
@@ -948,7 +949,8 @@
       background: var(--bg);
       display: flex; flex-direction: column;
       animation: fadeIn .25s ease;
-      overflow-y: auto;
+      overflow-y: auto; overflow-x: hidden;
+      width: 100%; max-width: 100vw;
     }
     .detail-topbar {
       display: flex; align-items: center; justify-content: space-between;
@@ -1132,14 +1134,21 @@
       font-weight: 400;
     }
     /* ── Similar products rail ─────────────── */
-    .detail-similar { max-width: 1040px; margin: 0 auto; padding: 8px 28px 100px; }
+    .detail-similar { width: 100%; max-width: 1040px; min-width: 0; margin: 0 auto; padding: 8px 28px 100px; }
     @media (max-width: 640px) { .detail-similar { padding: 4px 18px 100px; } }
     .detail-similar-title {
       font-size: 12px; font-weight: 700; color: var(--ink-faint); text-transform: uppercase;
       letter-spacing: .06em; margin: 0 0 18px; padding-top: 28px; border-top: 1px solid var(--line-soft);
     }
-    .detail-similar-rail { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 8px; align-items: center; justify-content: center; }
-    .detail-similar-item { flex: 0 0 148px; width: 148px; }
+    .detail-similar-rail {
+      display: flex; width: 100%; max-width: 100%; min-width: 0; gap: 20px;
+      overflow-x: auto; overflow-y: hidden; padding-bottom: 8px;
+      align-items: stretch; justify-content: flex-start;
+      scroll-snap-type: x proximity; overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    .detail-similar-item { flex: 0 0 148px; width: 148px; scroll-snap-align: start; display: flex; }
+    .detail-similar-item > .product-item { flex: 1; min-width: 0; }
     @media (max-width: 640px) { .detail-similar-item { flex-basis: 128px; width: 128px; } }
     .variant-chip {
       display: flex; flex-direction: column; align-items: flex-start;
@@ -2109,6 +2118,33 @@ function Checkout({ open, onClose, total, totalStr, onSubmit, submitting, custom
   const [mapOpen, setMapOpen] = useState(false)
   const [err, setErr] = useState('')
   const courier = delivery === 'courier'
+
+  // Checkout stays mounted while its sheet is closed, so its initial state may
+  // predate a CUST login. Refresh the account data every time checkout opens.
+  useEffect(() => {
+    if (!open) return
+    let cancelled = false
+    const fallbackName = customer?.name || customer?.customer_name || ''
+    const fallbackPhone = customer?.phone || customer?.phone_number || ''
+
+    setName(fallbackName)
+    setPhone(fallbackPhone)
+    setErr('')
+
+    if (customer?.customer_code) {
+      api('/storefront/customer/?code='+encodeURIComponent(customer.customer_code))
+        .then(data => {
+          if (cancelled) return
+          const profile = data?.customer || data || {}
+          setName(profile.name || profile.customer_name || fallbackName)
+          setPhone(profile.phone || profile.phone_number || fallbackPhone)
+        })
+        .catch(() => {})
+    }
+
+    return () => { cancelled = true }
+  }, [open, customer?.customer_code, customer?.name, customer?.phone])
+
   if (!open) return null
 
   const locateMe = () => {
