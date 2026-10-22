@@ -1,0 +1,63 @@
+/* ── Page body ───────────────────────── */
+.page-body {
+  max-width: 1400px; margin: 0 auto;
+  padding: 36px 28px 100px;
+}
+.page-title {
+  font-family: var(--font-manrope), -apple-system, sans-serif;
+  font-size: 36px; font-weight: 700; color: var(--ink);
+  letter-spacing: -0.025em; margin-bottom: 28px;
+  scroll-margin-top: 220px;
+  line-height: 1.1;
+}
+.page-title span { color: var(--ink-faint); font-weight: 400; font-size: 17px; margin-left: 12px; font-family: var(--font-manrope), sans-serif; letter-spacing: -0.01em; }
+@media (max-width: 640px) { .page-title { scroll-margin-top: 170px; font-size: 28px; } }
+
+/* ── Category Sections (Barchasi ko'rinishi) ─── */
+.cat-sections { display: flex; flex-direction: column; gap: 56px; }
+.cat-section { scroll-margin-top: 180px; }
+.cat-section-title {
+  font-family: var(--font-manrope), -apple-system, sans-serif;
+  font-size: 26px; font-weight: 700; color: var(--ink);
+  letter-spacing: -0.02em; margin-bottom: 22px;
+  line-height: 1.2;
+}
+@media (max-width: 640px) {
+  .cat-section { scroll-margin-top: 140px; }
+  .cat-section-title { font-size: 21px; margin-bottom: 16px; }
+}
+
+/* ── Product Grid ────────────────────── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 36px 24px;
+}
+@media (max-width: 1200px) { .product-grid { grid-template-columns: repeat(4,1fr); } }
+@media (max-width: 1024px) { .product-grid { grid-template-columns: repeat(3,1fr); } }
+@media (max-width: 860px)  { .product-grid { grid-template-columns: repeat(2,1fr); gap: 28px 16px; } }
+@media (max-width: 480px)  { .product-grid { grid-template-columns: repeat(2,1fr); gap: 22px 12px; } }
+@media (max-width: 340px)  { .product-grid { grid-template-columns: 1fr; } }
+
+/* ── Top tovarlar (tavsiya karusel) ──── */
+.top-rail-wrap { margin: 4px 0 32px; }
+.top-rail-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.top-rail-head h2 { font-size: 20px; font-weight: 800; color: var(--ink); margin: 0; letter-spacing: -0.01em; }
+.top-rail-badge { font-size: 12px; font-weight: 700; color: var(--sage-deep); background: var(--sage-tint); padding: 3px 11px; border-radius: 20px; white-space: nowrap; }
+.top-rail { display: flex; gap: 24px; overflow-x: auto; padding: 4px 2px 12px; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; align-items: stretch; }
+.top-rail::-webkit-scrollbar { height: 6px; }
+.top-rail::-webkit-scrollbar-track { background: transparent; }
+.top-rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.top-rail-item { position: relative; flex: 0 0 auto; width: 210px; scroll-snap-align: start; display: flex; }
+.top-rail-item > .product-item { flex: 1; min-width: 0; }
+.top-rail-rank {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  display: flex; align-items: center; gap: 4px;
+  background: var(--sage-deep); color: #fff;
+  font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  padding: 4px 8px 4px 6px; border-radius: 6px;
+  font-family: var(--font-manrope), sans-serif;
+  pointer-events: none;
+}
+@media (max-width: 860px) { .top-rail { gap: 16px; } .top-rail-item { width: 170px; } }
+@media (max-width: 480px) { .top-rail-item { width: 150px; } .top-rail-head h2 { font-size: 18px; } }

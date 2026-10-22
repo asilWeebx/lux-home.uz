@@ -1,0 +1,13 @@
+/* ── Magic orb ───────────────────────────── */
+.magic-orb {
+  position: fixed; z-index: 99999;
+  width: 18px; height: 18px;
+  background: var(--sage); border-radius: 50%;
+  box-shadow: 0 0 15px 5px rgba(166,124,73,0.6);
+  pointer-events: none;
+  transition: top .6s cubic-bezier(.5,-.5,.2,1), left .6s cubic-bezier(.2,.8,.2,1),
+              transform .6s ease, opacity .6s ease;
+}
+
+/* extra bottom padding for nav */
+.page-body { padding-bottom: 110px !important; }

@@ -1,44 +1,45 @@
-# Bozor ERP — Online do'kon (headless)
+# Lux Home — online do'kon (lux-home.uz)
 
-Bu **alohida** online do'kon. ERP frontendiga bog'lanmagan — u faqat ERP
-**Storefront API**ga API kalit orqali ulanadi (subdomen yo'q).
+Next.js ilova. ERP frontendiga bog'lanmagan — u faqat dukonline ERP
+**Storefront API**ga API kalit orqali ulanadi. Kalit serverda turadi:
+brauzer `/api/storefront/*` ga murojaat qiladi, server esa ERP'ga.
 
 ## Sozlash
-`config.js` faylini oching va ikkita qiymatni kiriting:
-
-```js
-window.STORE_CONFIG = {
-  API_URL: 'http://localhost:8000/api',
-  STOREFRONT_KEY: 'sk_live_telefonnomer_31dukon',   // ERP paneldan olinadi
-}
-```
-
-- **API_URL** — ERP backend manzili
-- **STOREFRONT_KEY** — tashkilot + filial kaliti (SuperAdmin → tashkilot → Online Store)
-
-Kalit qaysi tashkilotning qaysi filiali ekanini ERP o'zi biladi.
-
-## Ishga tushirish
-Statik fayl — build kerak emas. Papkada:
+`.env.example` dan `.env.local` yarating va kalitni kiriting:
 
 ```bash
-python3 -m http.server 5500
+DUKONLINE_STOREFRONT_KEY=sk_live_...   # SuperAdmin → tashkilot → Online Store
+# DUKONLINE_API_URL=https://api.dukonline.uz/api   (ixtiyoriy)
 ```
 
-Keyin brauzerда: **http://localhost:5500**
+Kalit `src/lib/storefront/server.ts` da ham yozilgan (hostingda o'zgaruvchi
+bo'lmasa shu ishlatiladi). `DUKONLINE_STOREFRONT_KEY` berilsa, u ustun turadi.
 
-> `file://` orqali ochilmaydi (CORS). `http.server` (5500 yoki 8080-port)
-> orqali oching — bu portlar ERP CORS ro'yxatiga qo'shilgan.
+## Ishga tushirish
+```bash
+npm ci
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npm run lint
+npm run typecheck
+```
 
 ## Qanday ishlaydi
 ```
-Online do'kon  ──X-Storefront-Key──►  ERP /api/storefront/products/   (o'qish)
-                                       ERP /api/storefront/orders/     (buyurtma)
+Brauzer ──► /api/storefront/products|info|top-products|customer   (o'qish)
+        ──► /api/storefront/login|orders                          (yozish)
+                 │
+                 └─ X-Storefront-Key ──► ERP /api/storefront/...
 ```
-Buyurtma ERP'da **Zakazlar** sahifasiga tushadi → tasdiqlanib sotilganda o'sha
-filialda **Sale** bo'ladi va qoldiq kamayadi.
+Bosh sahifa serverda katalog bilan tayyorlanadi va ERP'dan har daqiqada
+yangilanadi. Mijoz kirgan bo'lsa (`sf_cust`), uning narxlari brauzerda
+yuklanadi. Buyurtma ERP'da **Zakazlar** sahifasiga tushadi → tasdiqlanib
+sotilganda o'sha filialda **Sale** bo'ladi va qoldiq kamayadi.
 
 ## Fayllar
-- `index.html` — React ilova (katalog, birlik tanlash, savat, checkout)
-- `config.js` — API manzili + kalit
-# lux-home.uz
+- `src/app/(shop)/page.tsx` — bosh sahifa (katalog, mahsulot, savat, checkout, kabinet)
+- `src/features/storefront/Storefront.tsx` — sahifa holati (savat, filtrlar, oynalar)
+- `src/components/` — header, kategoriyalar, mahsulot kartasi va oynasi, savat, checkout, kabinet
+- `src/styles/shop/` — do'kon dizayni (fayllar tartibi muhim, `index.css` ga qarang)
+- `src/app/api/storefront/[endpoint]/route.ts` — ERP'ga proksi
+- `src/app/privacy/` — maxfiylik siyosati (`/privacy.html` → `/privacy`)

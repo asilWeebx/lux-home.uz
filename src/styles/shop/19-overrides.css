@@ -1,0 +1,17 @@
+/* ── Add button override (was Tilda yellow #FBBC05, now warm charcoal) ── */
+.add-btn {
+  background: #2d211f !important; color: #fff !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(45,33,31,0.15) !important;
+  font-weight: 600 !important;
+}
+.add-btn:hover:not(:disabled) { background: #a67c49 !important; box-shadow: 0 4px 14px rgba(166,124,73,0.35) !important; }
+.add-btn:disabled { background: #e7ded3 !important; color: #9f9188 !important; box-shadow: none !important; }
+.add-btn.btn-added { background: #a67c49 !important; color: #fff !important; box-shadow: 0 2px 10px rgba(166,124,73,0.4) !important; }
+
+/* extra bottom padding for nav */
+.page-body { padding-bottom: 110px !important; }
+
+/* Mobile search button — hidden on desktop, shown on phones */
+.mobile-search-trigger{display:none!important}
+@media(max-width:640px){.mobile-search-trigger{display:flex!important}.header-search:not(.fade-in){display:none!important}.header-search.fade-in{display:flex!important}}

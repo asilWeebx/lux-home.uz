@@ -1,0 +1,59 @@
+/* ── Category Bar ────────────────────── */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cat-bar {
+  position: sticky; top: 72px; z-index: 99;
+  transition: background-color 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+              box-shadow 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+              border-color 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+              margin-bottom 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.cat-bar-stuck {
+  background: rgba(251,248,243,0.95);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 2px 12px rgba(45,33,31,0.05);
+  border-bottom: 1px solid var(--line-soft);
+  /* Offsets the compact row height so content below keeps its position. */
+  margin-bottom: 34px;
+}
+.cat-bar-inner {
+  max-width: 1400px; margin: 0 auto; padding: 14px 28px;
+  display: flex; align-items: center; justify-content: safe center; gap: 10px;
+  overflow-x: auto; scrollbar-width: none;
+  height: auto;
+  transition: padding 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.cat-bar-inner::-webkit-scrollbar { display: none; }
+.cat-bar-stuck .cat-bar-inner { padding: 8px 28px; }
+.cat-chip {
+  flex-shrink: 0; height: 64px; padding: 14px 22px 14px 10px;
+  border-radius: var(--radius); border: 1px solid var(--line);
+  background: var(--bg-card); font-size: 14px; font-weight: 500; color: var(--ink);
+  letter-spacing: -0.01em;
+  transition: all 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: relative; cursor: pointer; display: inline-flex;
+  align-items: center; gap: 12px; overflow: visible;
+}
+.cat-bar-stuck .cat-chip {
+  height: 42px; padding: 8px 16px 8px 6px; font-size: 12.5px; gap: 8px;
+}
+.cat-chip:hover {
+  background: var(--sage-tint); color: var(--sage-deep); border-color: var(--sage-tint);
+}
+.cat-chip.active {
+  background: var(--ink); border-color: var(--ink); color: #fff;
+  box-shadow: 0 4px 14px rgba(45,33,31,0.18);
+}
+
+/* sub-kategoriya qatori (top'ning ostida) */
+.cat-bar-sub { top: 136px; z-index: 98; }
+.cat-bar-sub .cat-bar-inner { height: 52px; }
+.cat-chip-sub { height: 36px; font-size: 12.5px; padding: 0 18px; font-weight: 500; }
+.cat-chip-sub.active {
+  background: var(--sage); border-color: var(--sage); color: #fff;
+  box-shadow: 0 3px 10px rgba(166,124,73,0.3);
+}

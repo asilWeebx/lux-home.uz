@@ -1,0 +1,112 @@
+/* The privacy page's own styles, as on the old privacy.html. Only this route loads them. */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --accent:#BFA06A; --accent-dark:#A6884C; --accent-bg:rgba(191,160,106,.12);
+  --bg:#F7F2EA; --card:#fff; --text:#2E2A24; --muted:#7A7266; --border:#E9E1D4;
+}
+body{
+  font-family:-apple-system,'Inter','Helvetica Neue',Arial,sans-serif;
+  background:var(--bg); color:var(--text);
+  -webkit-font-smoothing:antialiased; line-height:1.65; font-size:16px;
+}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px 80px}
+
+header.top{
+  position:sticky; top:0; z-index:10;
+  background:rgba(247,242,234,.92);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.top-inner{
+  max-width:820px;margin:0 auto;padding:0 20px;height:64px;
+  display:flex;align-items:center;gap:14px;
+}
+.brand{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:21px;font-weight:700;color:var(--text);
+  letter-spacing:.3px;text-decoration:none;white-space:nowrap;
+}
+.brand span{color:var(--accent)}
+.langs{margin-left:auto;display:flex;gap:6px}
+.lang-btn{
+  border:1.5px solid var(--border);background:var(--card);
+  color:var(--muted);font:inherit;font-size:12px;font-weight:700;
+  padding:6px 12px;border-radius:999px;cursor:pointer;
+  transition:all .15s;letter-spacing:.4px;
+}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent-dark)}
+.lang-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+h1{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:34px;line-height:1.25;font-weight:700;
+  margin:44px 0 10px;letter-spacing:-.3px;
+}
+.updated{
+  display:inline-block;font-size:12.5px;font-weight:600;color:var(--accent-dark);
+  background:var(--accent-bg);padding:6px 14px;border-radius:999px;margin-bottom:28px;
+}
+.lead{font-size:16.5px;color:#4A443B;margin-bottom:26px}
+
+section{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:24px 26px;margin-bottom:14px;
+}
+h2{
+  font-size:18px;font-weight:700;letter-spacing:-.2px;
+  margin-bottom:12px;display:flex;gap:10px;align-items:baseline;
+}
+h2 .n{
+  font-size:12px;font-weight:800;color:var(--accent-dark);
+  background:var(--accent-bg);min-width:26px;height:26px;border-radius:8px;
+  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+h3{font-size:14.5px;font-weight:700;margin:18px 0 8px;color:var(--text)}
+p{margin-bottom:10px;font-size:15px;color:#3E3931}
+ul{margin:0 0 10px 20px}
+li{margin-bottom:7px;font-size:15px;color:#3E3931}
+li::marker{color:var(--accent)}
+strong{font-weight:700;color:var(--text)}
+a{color:var(--accent-dark);text-decoration:none;border-bottom:1px solid rgba(166,136,76,.4)}
+a:hover{border-bottom-color:var(--accent-dark)}
+
+table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+td:first-child{font-weight:600;width:38%}
+
+.note{
+  background:var(--accent-bg);border-left:3px solid var(--accent);
+  border-radius:0 10px 10px 0;padding:14px 18px;margin:14px 0;
+}
+.note p:last-child{margin-bottom:0}
+
+.contact-card{
+  background:var(--text);color:#F7F2EA;border:none;
+}
+.contact-card h2{color:#fff}
+.contact-card h2 .n{background:rgba(191,160,106,.25);color:var(--accent)}
+.contact-card p,.contact-card li{color:#DCD5C9}
+.contact-card a{color:var(--accent);border-bottom-color:rgba(191,160,106,.5)}
+.contact-card strong{color:#fff}
+
+footer{
+  text-align:center;color:var(--muted);font-size:13px;
+  padding-top:26px;border-top:1px solid var(--border);margin-top:26px;
+}
+
+[data-lang]{display:none}
+[data-lang].on{display:block}
+
+@media (max-width:600px){
+  h1{font-size:26px;margin-top:32px}
+  section{padding:20px 18px;border-radius:12px}
+  .wrap{padding:0 16px 60px}
+  .top-inner{padding:0 16px}
+  .brand{font-size:18px}
+  td:first-child{width:44%}
+}
+@media print{
+  header.top{display:none} section{break-inside:avoid;box-shadow:none}
+  body{background:#fff}
+}

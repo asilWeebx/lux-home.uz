@@ -1,0 +1,52 @@
+/* ── Banner karusel ── */
+/* Mahsulotlar bloki bilan bir xil kenglikda (page-body bilan mos) */
+.banner-wrap { max-width: 1400px; margin: 24px auto 48px; padding: 0 28px; }
+.banner-viewport { position: relative; overflow: hidden; border-radius: 20px; box-shadow: var(--shadow-card); }
+.banner-track { display: flex; transition: transform .6s cubic-bezier(.4,0,.2,1); }
+.banner-slide { position: relative; min-width: 100%; aspect-ratio: 2.4 / 1; background: var(--bg-soft); }
+.banner-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner-slide::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(45,33,31,.42) 0%, rgba(45,33,31,.08) 48%, transparent 72%);
+  pointer-events: none;
+}
+.banner-slide.banner-align-right::after {
+  background: linear-gradient(270deg, rgba(45,33,31,.42) 0%, rgba(45,33,31,.08) 48%, transparent 72%);
+}
+.banner-title {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 32px;
+  background: none; color: #fff; z-index: 2; max-width: 720px;
+  font-family: var(--font-manrope), -apple-system, sans-serif;
+  font-size: clamp(24px, 3vw, 44px); font-weight: 700; letter-spacing: -0.035em;
+  text-shadow: 0 2px 22px rgba(45,33,31,.28);
+  line-height: 1.2;
+}
+.banner-title.right { left: auto; right: 0; text-align: right; }
+.banner-dots { position: absolute; bottom: 18px; left: 0; right: 0; display: flex; justify-content: center; gap: 6px; z-index: 2; }
+.banner-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.55); cursor: pointer; transition: all .25s; border: none; padding: 0; }
+.banner-dot.active { background: #fff; width: 24px; border-radius: 4px; }
+.banner-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.15); color: #fff;
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s; z-index: 3;
+}
+.banner-arrow:hover { background: rgba(255,255,255,0.28); }
+.banner-arrow.prev { left: 18px; }
+.banner-arrow.next { right: 18px; }
+@media (max-width: 640px) {
+  .banner-wrap { padding: 0 16px; margin: 14px auto 26px; }
+  .banner-viewport { border-radius: 14px; }
+  .banner-slide { aspect-ratio: 16 / 9; }
+  .banner-title { font-size: 22px; padding: 22px 20px 30px; max-width: 86%; }
+  .banner-arrow { width: 36px; height: 36px; }
+  .banner-arrow.prev { left: 12px; }
+  .banner-arrow.next { right: 12px; }
+}
+@media (max-width: 480px) {
+  .bottom-nav { bottom: 14px; width: calc(100% - 24px); padding: 8px 10px; }
+  .nav-icon-wrap { width: 48px; height: 32px; }
+  .nav-label { font-size: 10px; }
+}

@@ -1,0 +1,61 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-manrope), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #fbf8f3;
+  color: #2d211f;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  letter-spacing: -0.005em;
+}
+::-webkit-scrollbar { width: 0; height: 0; }
+input, select, button, textarea { font-family: inherit; }
+input:focus, select:focus { outline: none; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+/* ── Design tokens (soft, Tilda-like warm minimalism) ─── */
+:root {
+  --bg: #fbf8f3;                /* warm cream page bg */
+  --bg-card: #ffffff;           /* card surface */
+  --bg-soft: #eee5d8;           /* deeper sand */
+  --bg-muted: #f5efe7;          /* subtle muted */
+  --ink: #2d211f;               /* primary warm charcoal */
+  --ink-soft: #6f625b;          /* secondary text */
+  --ink-faint: #9f9188;         /* tertiary / meta */
+  --sage: #a67c49;              /* primary accent — soft sage */
+  --sage-deep: #7d5835;         /* hover / pressed */
+  --sage-tint: #f1e6d8;         /* sage tint background */
+  --clay: #9c5349;              /* warm terracotta — sale/badge */
+  --clay-tint: #f5e4de;
+  --line: #e7ded3;              /* hairline borders */
+  --line-soft: #efe9e0;
+  --shadow-soft: 0 1px 2px rgba(45,33,31,0.04), 0 4px 16px rgba(45,33,31,0.05);
+  --shadow-card: 0 1px 3px rgba(45,33,31,0.05), 0 8px 28px rgba(45,33,31,0.06);
+  --shadow-float: 0 4px 24px rgba(45,33,31,0.08), 0 12px 48px rgba(45,33,31,0.06);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+  /* Compatibility shims for the JS that references these */
+  --accent: #a67c49;
+  --accent-dark: #7d5835;
+  --accent-bg: rgba(166,124,73,0.12);
+  --coral: #9c5349;
+  --coral-dark: #7f4038;
+}
+
+/* ── Utility ─────────────────────────── */
+.clamp1 { display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden; }
+.clamp2 { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+.clamp3 { display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden; }
+
+/* ── Animations ──────────────────────── */
+@keyframes fadeUp  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+@keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+@keyframes popIn   { from{opacity:0;transform:scale(.94)} to{opacity:1;transform:none} }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:none} }
+.fade-up  { animation: fadeUp  .42s cubic-bezier(.16,1,.3,1) both; }
+.fade-in  { animation: fadeIn  .25s ease both; }
+.pop-in   { animation: popIn   .3s cubic-bezier(.34,1.4,.64,1) both; }
+.slide-up { animation: slideUp .36s cubic-bezier(.32,.72,0,1) both; }

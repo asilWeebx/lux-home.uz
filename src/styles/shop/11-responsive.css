@@ -1,0 +1,24 @@
+/* ── Responsive tweaks ─────────────────── */
+@media (max-width: 640px) {
+  .header-inner { padding: 0 16px; height: 60px; gap: 12px; }
+  .header-logo  { font-size: 18px; }
+  .header-search { height: 40px; }
+  .page-body    { padding: 24px 16px 100px; }
+  .page-title   { font-size: 26px; margin-bottom: 20px; }
+  .cat-bar      { top: 60px; }
+  .cat-bar-sub  { top: auto; }
+  .cat-bar-inner{ padding: 10px 16px; gap: 12px; }
+  .cat-chip { height: 58px; padding: 10px 18px 10px 8px; font-size: 13px; gap: 10px; }
+  .cat-chip-thumb { width: 44px; height: 44px; }
+  .cat-chip-sub { height: 32px; padding: 0 14px; font-size: 12px; }
+  .product-name { font-size: 13px; }
+  .product-price{ font-size: 15px; }
+  .icon-btn { width: 40px; height: 40px; }
+  .login-btn { height: 36px; padding: 0 14px; font-size: 12px; }
+  .avatar-btn { width: 36px; height: 36px; font-size: 13px; }
+  .add-btn { height: 40px; font-size: 12.5px; }
+}
+@media (max-width: 480px) {
+  .header-search { display: none; }
+  .mobile-search-shown .header-search { display: flex; position: absolute; left: 16px; right: 16px; top: 50%; transform: translateY(-50%); max-width: none; }
+}

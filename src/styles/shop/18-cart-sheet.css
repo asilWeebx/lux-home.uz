@@ -1,0 +1,92 @@
+/* ── Cart Redesign ───────────────────────── */
+.cart-sheet-new {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--bg); border-radius: 28px 28px 0 0;
+  max-height: 88vh; display: flex; flex-direction: column;
+  overflow: hidden; max-width: 560px; margin: 0 auto;
+  box-shadow: 0 -8px 40px rgba(45,33,31,0.15);
+}
+.cart-handle { width: 40px; height: 4px; background: var(--line); border-radius: 2px; margin: 14px auto 0; }
+.cart-head-new {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px 18px;
+}
+.cart-title-new {
+  font-family: var(--font-manrope), -apple-system, sans-serif;
+  font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em;
+}
+.cart-count-chip {
+  background: var(--sage-tint); border-radius: var(--radius-pill); padding: 4px 12px;
+  font-size: 12px; font-weight: 600; color: var(--sage-deep); margin-left: 10px;
+}
+.cart-items-list { flex: 1; overflow-y: auto; padding: 4px 0 8px; }
+.cart-item-new {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 22px; transition: background .15s;
+}
+.cart-item-new:active { background: var(--bg-muted); }
+.cart-thumb-new {
+  width: 62px; height: 62px; border-radius: 14px;
+  background: var(--bg-muted); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.cart-thumb-new img { width: 100%; height: 100%; object-fit: contain; }
+.cart-info-new { flex: 1; min-width: 0; }
+.cart-name-new { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
+.cart-price-new { font-size: 13px; font-weight: 600; color: var(--sage-deep); letter-spacing: -0.01em; }
+.cart-unit-new { font-size: 11px; color: var(--ink-faint); font-weight: 400; }
+.cart-qty-ctrl { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.cqb {
+  width: 32px; height: 32px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg-card);
+  font-size: 16px; color: var(--ink-soft); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .15s; font-weight: 400;
+}
+.cqb:hover { background: var(--sage-tint); border-color: var(--sage-tint); color: var(--sage-deep); }
+.cqb.cqb-del { border-color: var(--clay-tint); color: var(--clay); }
+.cqb.cqb-del:hover { background: var(--clay-tint); }
+/* Savatda kg tovar — kasr miqdor input */
+.cart-qty-input {
+  width: 60px; height: 32px; border: 1px solid var(--line); border-radius: 10px;
+  text-align: center; font-size: 13px; font-weight: 600; color: var(--ink); outline: none;
+  -moz-appearance: textfield;
+  background: var(--bg-card);
+}
+.cart-qty-input:focus { border-color: var(--sage); box-shadow: 0 0 0 3px var(--sage-tint); }
+.cart-qty-input::-webkit-outer-spin-button,
+.cart-qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cqu { font-size: 11px; font-weight: 600; color: var(--sage-deep); }
+.cqn {
+  width: 42px; height: 32px; text-align: center; font-size: 14px; font-weight: 600; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 10px; background: var(--bg-card); outline: none;
+  -moz-appearance: textfield;
+}
+.cqn:focus { border-color: var(--sage); box-shadow: 0 0 0 3px var(--sage-tint); }
+.cqn::-webkit-outer-spin-button,
+.cqn::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cart-divider { height: 1px; background: var(--line-soft); margin: 0 22px; }
+.cart-footer-new { padding: 18px 22px 32px; background: var(--bg); border-top: 1px solid var(--line-soft); }
+.cart-total-card {
+  background: var(--sage-tint);
+  border: 1px solid rgba(166,124,73,0.2); border-radius: 16px;
+  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+}
+.cart-total-lbl { font-size: 13px; color: var(--sage-deep); font-weight: 600; letter-spacing: -0.01em; }
+.cart-total-val {
+  font-family: var(--font-manrope), -apple-system, sans-serif;
+  font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em;
+}
+.cart-checkout-btn {
+  width: 100%; height: 54px; border-radius: var(--radius-sm); border: none;
+  background: var(--ink); color: #fff; font-size: 15px; font-weight: 600;
+  box-shadow: 0 4px 16px rgba(45,33,31,0.2); cursor: pointer;
+  transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  letter-spacing: -0.01em;
+}
+.cart-checkout-btn:hover { background: var(--sage); box-shadow: 0 4px 16px rgba(166,124,73,0.35); }
+.cart-checkout-btn:disabled { background: var(--line); color: var(--ink-faint); box-shadow: none; cursor: not-allowed; }
+.cart-empty-new { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 64px 20px; gap: 12px; }
+.cart-empty-icon { font-size: 52px; opacity: 0.5; }
+.cart-empty-text { font-family: var(--font-manrope), -apple-system, sans-serif; font-size: 18px; font-weight: 600; color: var(--ink-soft); }
+.cart-empty-sub { font-size: 13px; color: var(--ink-faint); }
