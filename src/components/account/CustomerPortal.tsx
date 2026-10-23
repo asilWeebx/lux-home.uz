@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { IX } from '@/components/ui/icons'
 import { api } from '@/lib/api'
-import { fmtDate as fmt, pmLabel, som } from '@/lib/format'
+import { fmtDate as fmt, money, pmLabel, som } from '@/lib/format'
 import type { Customer, CustomerData } from '@/lib/types'
 
 const TABS = [
@@ -96,9 +96,11 @@ export function CustomerPortal({ open, onClose, customer, onLogout }: Props) {
                 {Object.entries(data.customer.currency_debts || {}).map(([c, a], k) => (
                   <div key={k} className="portal-stat-val" style={{ fontSize: 14, marginTop: 2 }}>{a} {c}</div>))}
               </div>
-              <div className={'portal-stat' + ((data.customer.credit ?? 0) > 0 ? ' credit' : '')}>
+              <div className={'portal-stat' + (((data.customer.credit ?? 0) > 0 || Object.keys(data.customer.currency_advances || {}).length > 0) ? ' credit' : '')}>
                 <div className="portal-stat-label">Ortiqcha to&apos;lov</div>
                 <div className="portal-stat-val">{som(data.customer.credit || 0)}</div>
+                {Object.entries(data.customer.currency_advances || {}).map(([c, a]) => (
+                  <div key={c} className="portal-stat-val" style={{ fontSize: 14, marginTop: 2 }}>{money(a, c)}</div>))}
               </div>
             </div>
             <div style={{ border: '1.5px solid #f0f0f0', borderRadius: 14, padding: '14px 16px', background: '#fafafa', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

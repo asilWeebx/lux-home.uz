@@ -132,6 +132,7 @@ export type CustomerData = {
     debt?: number
     credit?: number
     currency_debts?: Record<string, number | string>
+    currency_advances?: Record<string, number>
   }
   sales: Sale[]
   online_orders: OnlineOrder[]
